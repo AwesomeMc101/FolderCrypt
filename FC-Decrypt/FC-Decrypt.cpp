@@ -6,6 +6,7 @@ MIT
 Requires C++17 to compile.
 */
 
+
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -17,8 +18,7 @@ void decrypt(std::string pass, std::string path) {
     /* Read File Data */
     std::ifstream mf(path);
     if (!mf.is_open()) {
-        printf("Fail");
-        mf.close();
+        printf("fail");
         return;
     }
     std::string alldat;
@@ -104,12 +104,18 @@ void correct_string(std::string& dir) {
 int main(int argc, char* argv[])
 {
     if (argc < 2) {
-        printf("Please use decrypt.bat in your folder.");
+        printf("Please don't run directly! Instead, use the 'decrypt.bat' file automatically generated for you\nin the encrypted folder!");
         std::cin.get();
+        return 0;
     }
+
     std::string dir = argv[1];
+    for (int n = 2; n < argc; n++) {
+        dir.append(" ");
+        dir.append(argv[n]);
+    }
     correct_string(dir);
-    system("cls");
+
 entry: //dgaf, goto is valid
     std::cout << "If you enter your password incorrectly, you will need to re-encrypt with the incorrect password\nand then decrypt with the correct one.\nData can be lost- enter correctly!\n\n";
     std::cout << "Please Enter Your Password: ";
@@ -123,7 +129,6 @@ entry: //dgaf, goto is valid
         std::cout << "Passwords don't match!\n";
         goto entry;
     }
-
     std::filesystem::directory_iterator di(dir);
     for (auto& x : di) {
         std::cout << x.path();
